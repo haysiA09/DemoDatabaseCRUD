@@ -1,5 +1,6 @@
 package com.example.demodatabasecrud;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -66,5 +67,33 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this,
+                        EditActivity.class);
+
+                String data = al.get(0);
+                String id = data.split(",")[0].split(":")[1];
+                String content = data.split(",")[1].trim();
+
+                Note target = new Note(Integer.parseInt(id), content);
+                i.putExtra("data", target);
+                startActivityForResult(i,9);
+            }
+        });
+
+
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && requestCode == 9){
+            btnRetrieve.performClick();
+        }
+    }
+
 }
